@@ -1,0 +1,95 @@
+class Usuario:
+    def __init__(self, nome, cpf):
+        self.nome = nome
+        self.cpf = cpf
+
+class ContaCorrente:
+    def __init__(self, usuario):
+        self.usuario = usuario
+        self.saldo = 0
+        self.depositos = []
+        self.saques = []
+
+    def depositar(self, valor):
+        if valor > 0:
+            self.saldo += valor
+            self.depositos.append(valor)
+            print(f"Depósito de R$ {valor:.2f} realizado com sucesso.")
+        else:
+            print("O valor do depósito deve ser maior que zero.")
+
+    def sacar(self, valor):
+        if valor <= 500:
+            if valor <= self.saldo:
+                self.saldo -= valor
+                self.saques.append(valor)
+                print(f"Saque de R$ {valor:.2f} realizado com sucesso.")
+            else:
+                print("Saldo insuficiente para efetuar o saque.")
+        else:
+            print("O valor máximo de saque é R$ 500.00.")
+
+    def extrato(self):
+        print("\nExtrato Bancário:")
+        if not self.depositos and not self.saques:
+            print("Não foram realizadas movimentações.")
+        else:
+            for deposito in self.depositos:
+                print(f"Depósito: R$ {deposito:.2f}")
+            for saque in self.saques:
+                print(f"Saque: R$ {saque:.2f}")
+            print(f"Saldo atual: R$ {self.saldo:.2f}")
+
+# Dicionário para armazenar os usuários criados
+usuarios = {}
+
+def criar_usuario():
+    nome = input("Digite o nome do usuário: ")
+    cpf = input("Digite o CPF do usuário: ")
+    usuario = Usuario(nome, cpf)
+    usuarios[cpf] = usuario
+    print(f"Usuário {nome} com CPF {cpf} criado com sucesso.")
+
+# Exemplo de uso do sistema bancário
+while True:
+    print("\nEscolha uma operação:")
+    print("1. Depositar")
+    print("2. Sacar")
+    print("3. Extrato")
+    print("4. Criar Usuário")
+    print("5. Criar Conta Corrente")
+    print("6. Sair")
+
+    escolha = input("Digite o número da operação: ")
+
+    if escolha == "1":
+        if 'conta' in locals():
+            valor = float(input("Digite o valor do depósito: "))
+            conta.depositar(valor)
+        else:
+            print("Crie uma conta corrente antes de fazer um depósito.")
+    elif escolha == "2":
+        if 'conta' in locals():
+            valor = float(input("Digite o valor do saque: "))
+            conta.sacar(valor)
+        else:
+            print("Crie uma conta corrente antes de fazer um saque.")
+    elif escolha == "3":
+        if 'conta' in locals():
+            conta.extrato()
+        else:
+            print("Crie uma conta corrente antes de visualizar o extrato.")
+    elif escolha == "4":
+        criar_usuario()
+    elif escolha == "5":
+        cpf = input("Digite o CPF do usuário para criar a conta corrente: ")
+        if cpf in usuarios:
+            usuario = usuarios[cpf]
+            conta = ContaCorrente(usuario)
+            print(f"Conta corrente vinculada ao usuário {usuario.nome} criada com sucesso.")
+        else:
+            print("CPF não encontrado. Crie um usuário com esse CPF primeiro.")
+    elif escolha == "6":
+        break
+    else:
+        print("Opção inválida. Por favor, escolha uma operação válida.")
