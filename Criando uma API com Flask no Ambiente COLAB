@@ -1,0 +1,45 @@
+from flask import Flask, jsonify
+
+# Crie uma instância do Flask
+app = Flask(__name__)
+
+# Dados em formato JSON
+dados = [
+    {
+        "Number": 1,
+        "Name": "Mahesh",
+        "Age": 25,
+        "City": "Bangalore",
+        "Country": "India"
+    },
+    {
+        "Number": 2,
+        "Name": "Alex",
+        "Age": 26,
+        "City": "London",
+        "Country": "UK"
+    },
+    {
+        "Number": 3,
+        "Name": "David",
+        "Age": 27,
+        "City": "San Francisco",
+        "Country": "USA"
+    },
+    {
+        "Number": 4,
+        "Name": "John",
+        "Age": 28,
+        "City": "Toronto",
+        "Country": "Canada"
+    }
+]
+
+# Rota para retornar os dados em JSON
+@app.route('/index', methods=['GET'])
+def get_data():
+    return jsonify(dados)
+
+if __name__ == '__main__':
+    # Executa o aplicativo Flask
+    app.run()
