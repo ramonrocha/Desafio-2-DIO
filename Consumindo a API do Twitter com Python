@@ -1,0 +1,10 @@
+import matplotlib.pyplot as plt
+
+idiomas = ['Inglês', 'Espanhol', 'Português']
+contagens = [100, 50, 30]
+
+plt.bar(idiomas, contagens)
+plt.xlabel('Idioma')
+plt.ylabel('Contagem de Tweets')
+plt.title('Contagem de Tweets por Idioma')
+plt.show()
