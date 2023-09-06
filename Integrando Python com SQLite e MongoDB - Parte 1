@@ -1,0 +1,52 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from models import Cliente, Conta  # Importe as classes do seu modelo (models.py)
+
+# Configurar a conexão com o SQLite (ou outro banco de dados relacional)
+engine = create_engine('sqlite:///banco.db')  # Substitua 'banco.db' pelo nome do seu arquivo de banco de dados
+
+# Criar uma sessão para interagir com o banco de dados
+Session = sessionmaker(bind=engine)
+session = Session()
+
+# Método de recuperação de todos os clientes
+def recuperar_clientes():
+    clientes = session.query(Cliente).all()
+    return clientes
+
+# Método de recuperação de todas as contas
+def recuperar_contas():
+    contas = session.query(Conta).all()
+    return contas
+
+# Método de recuperação de contas de um cliente específico pelo nome
+def recuperar_contas_por_nome(nome):
+    cliente = session.query(Cliente).filter_by(nome=nome).first()
+    if cliente:
+        return cliente.contas
+    else:
+        return []
+
+# Exemplo de uso dos métodos de recuperação de dados
+if __name__ == "__main__":
+    # Recuperar e imprimir todos os clientes
+    print("Todos os clientes:")
+    clientes = recuperar_clientes()
+    for cliente in clientes:
+        print(f"Cliente: {cliente.nome}, CPF: {cliente.cpf}")
+
+    # Recuperar e imprimir todas as contas
+    print("\nTodas as contas:")
+    contas = recuperar_contas()
+    for conta in contas:
+        print(f"Conta: Agência {conta.agencia}, Número {conta.num}, Saldo R$ {conta.saldo:.2f}")
+
+    # Recuperar e imprimir contas de um cliente específico pelo nome
+    nome_cliente = "João"  # Substitua pelo nome do cliente desejado
+    print(f"\nContas de {nome_cliente}:")
+    contas_cliente = recuperar_contas_por_nome(nome_cliente)
+    for conta in contas_cliente:
+        print(f"Conta: Agência {conta.agencia}, Número {conta.num}, Saldo R$ {conta.saldo:.2f}")
+
+    # Fechar a sessão
+    session.close()
