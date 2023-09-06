@@ -1,0 +1,54 @@
+import pymongo
+
+# Conectar ao MongoDB Atlas (substitua 'seu_uri_do_mongodb' pelo URI do seu banco MongoDB Atlas)
+client = pymongo.MongoClient('seu_uri_do_mongodb')
+
+# Definir o banco de dados (substitua 'nome_do_banco' pelo nome desejado)
+db = client['nome_do_banco']
+
+# Definir a coleção 'bank' para documentos de clientes
+bank_collection = db['bank']
+
+# Inserir documentos de exemplo
+cliente1 = {
+    'nome': 'João',
+    'cpf': '123456789',
+    'endereco': 'Rua A',
+    'contas': [
+        {
+            'tipo': 'Corrente',
+            'agencia': '001',
+            'num': 12345,
+            'saldo': 1000.0
+        },
+        {
+            'tipo': 'Poupança',
+            'agencia': '002',
+            'num': 54321,
+            'saldo': 500.0
+        }
+    ]
+}
+
+cliente2 = {
+    'nome': 'Maria',
+    'cpf': '987654321',
+    'endereco': 'Rua B',
+    'contas': [
+        {
+            'tipo': 'Poupança',
+            'agencia': '003',
+            'num': 67890,
+            'saldo': 800.0
+        }
+    ]
+}
+
+bank_collection.insert_many([cliente1, cliente2])
+
+# Recuperar informações de todos os clientes
+todos_os_clientes = bank_collection.find()
+for cliente in todos_os_clientes:
+    print(f"Cliente: {cliente['nome']}, CPF: {cliente['cpf']}")
+    for conta in cliente['contas']:
+        print(f"Conta: Agência {conta['agencia']}, Número {conta['num']}, Saldo R$ {conta['saldo']:.2f}")
